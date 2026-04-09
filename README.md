@@ -1,7 +1,9 @@
 # ⚡ ARIA – Automated Response & Incident Agent
 
-> AI-powered SRE incident management for e-commerce platforms.
-> Submit a report, get a full triage in under 3 seconds, and close the loop automatically.
+Solution Introduction
+ARIA (Automated Response & Incident Agent) is an AI-powered SRE pipeline that automates the first-response layer of e-commerce incident management. When something breaks in production, engineering teams waste critical minutes manually reading logs, assigning priorities, creating tickets, and notifying the right people. ARIA eliminates that manual overhead by handling the entire workflow automatically — from the moment an incident is reported to the moment the team is notified and the reporter receives confirmation.
+The core of ARIA is a multimodal triage agent powered by Google Gemini. What makes it unique is that before analyzing each incident, ARIA fetches real TypeScript source files directly from the Medusa.js GitHub repository — the open-source e-commerce platform used as the codebase reference. This means the AI doesn't rely on generic knowledge; it grounds its root cause hypotheses in actual production code, identifying specific service methods, file paths, and failure patterns. The agent accepts text descriptions, screenshots, and log files, and returns a structured analysis including priority level (P1–P4), a severity score from 0 to 100 with a six-factor breakdown, recommended actions, and a step-by-step runbook for the on-call engineer.
+The full pipeline runs end-to-end in under 3 seconds: incident ingestion with input guardrails and prompt injection protection, AI triage with real codebase context, automatic ticket creation (Linear, Jira, or mock), team notification via email and Discord with priority color-coded embeds, and a closed-loop resolution notification back to the original reporter. Everything is fully observable through a structured JSON event log covering all pipeline stages, a real-time WebSocket log stream in the UI, and a metrics endpoint tracking latency, triage accuracy, and guardrail blocks. The entire system runs with a single docker compose up --build command with zero external dependencies required in demo mode.
 
 ---
 
