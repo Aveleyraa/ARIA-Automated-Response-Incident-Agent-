@@ -1,0 +1,51 @@
+version: "3.9"
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      # ── AI ─────────────────────────────────────────────────
+      - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+
+      # ── Ticketing ──────────────────────────────────────────
+      - TICKETING_PROVIDER=${TICKETING_PROVIDER:-mock}
+      - LINEAR_API_KEY=${LINEAR_API_KEY:-}
+      - LINEAR_TEAM_ID=${LINEAR_TEAM_ID:-}
+      - JIRA_URL=${JIRA_URL:-}
+      - JIRA_EMAIL=${JIRA_EMAIL:-}
+      - JIRA_API_TOKEN=${JIRA_API_TOKEN:-}
+      - JIRA_PROJECT_KEY=${JIRA_PROJECT_KEY:-SRE}
+
+      # ── Email ──────────────────────────────────────────────
+      - MOCK_EMAIL=${MOCK_EMAIL:-true}
+      - SMTP_HOST=${SMTP_HOST:-smtp.gmail.com}
+      - SMTP_PORT=${SMTP_PORT:-587}
+      - SMTP_USER=${SMTP_USER:-}
+      - SMTP_PASS=${SMTP_PASS:-}
+      - FROM_EMAIL=${FROM_EMAIL:-sre-agent@yourcompany.com}
+      - TEAM_EMAILS=${TEAM_EMAILS:-oncall@yourcompany.com}
+
+      # ── Communicator ───────────────────────────────────────
+      - SLACK_WEBHOOK_URL=${SLACK_WEBHOOK_URL:-}
+      - DISCORD_WEBHOOK_URL=${DISCORD_WEBHOOK_URL:-}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
