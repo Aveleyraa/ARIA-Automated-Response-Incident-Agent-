@@ -121,7 +121,7 @@ ARIA demonstrates a production-realistic SRE automation pipeline that reduces me
 
 ```bash
 # 1. Clone
-git clone https://github.com/yourorg/sre-agent
+git clone https://github.com/Aveleyraa/ARIA-Automated-Response-Incident-Agent-.git
 cd sre-agent
 
 # 2. Configure
